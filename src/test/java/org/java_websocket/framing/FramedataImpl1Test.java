@@ -102,4 +102,32 @@ public class FramedataImpl1Test {
         assertEquals("Fin must be set", true, frame0.isFin());
         assertArrayEquals("Payload must be equal", "firstsecond".getBytes(), frame0.getPayloadData().array());
     }
+ 
+    @Test
+    public void testAppend1() {
+        FramedataImpl1 frame0 = FramedataImpl1.get(Opcode.BINARY);
+        frame0.setFin(false);
+        frame0.setPayload(null);
+        FramedataImpl1 frame1 = FramedataImpl1.get(Opcode.BINARY);
+        frame1.setPayload(ByteBuffer.wrap("second".getBytes()));
+        frame0.append(frame1);
+        assertEquals("Fin must be set", true, frame0.isFin());
+        assertArrayEquals("Payload must be equal", "second".getBytes(), frame0.getPayloadData().array());
+    }
+
+    @Test
+    public void testToString() {
+	FramedataImpl1 frame = FramedataImpl1.get(Opcode.BINARY);
+	frame.setPayload(ByteBuffer.wrap("hello".getBytes()));
+	String excepted = "Framedata{ opcode:BINARY, fin:true, rsv1:false, rsv2:false, rsv3:false, payload length:[pos:0, len:5], payload:hello}";
+	assertEquals(excepted, frame.toString());
+
+	excepted = "Framedata{ opcode:BINARY, fin:true, rsv1:false, rsv2:false, rsv3:false, payload length:[pos:0, len:1001], payload:(too big to display)}";
+	StringBuilder rec = new StringBuilder();
+	for (int i = 0; i < 1001; i++) {
+	    rec.append("a");
+	}
+	frame.setPayload(ByteBuffer.wrap(rec.toString().getBytes()));
+	assertEquals(excepted, frame.toString());
+    }
 }
