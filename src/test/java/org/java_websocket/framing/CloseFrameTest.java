@@ -28,9 +28,9 @@ package org.java_websocket.framing;
 import org.java_websocket.enums.Opcode;
 import org.java_websocket.exceptions.InvalidDataException;
 import org.junit.Test;
+import java.nio.ByteBuffer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * JUnit Test for the CloseFrame class
@@ -241,5 +241,90 @@ public class CloseFrameTest {
         } catch (InvalidDataException e) {
             //fine
         }
+
+	int test_undefine_code = 2500;
+	frame.setCode(test_undefine_code);
+	frame.setReason("Trying to send an illegal close code");
+	try {
+            frame.isValid();
+	    fail("InvalidDataException should be thrown");
+	} catch (InvalidDataException e) {
+	    //fine
+	}
+
+	test_undefine_code = 5000;
+	frame.setCode(test_undefine_code);
+	frame.setReason("Close code must not be send over the wire");
+	try {
+            frame.isValid();
+	    fail("InvalidDataException should be thrown");
+	} catch (InvalidDataException e) {
+	    //fine
+	}
+        
+	test_undefine_code = 1004;
+	frame.setCode(test_undefine_code);
+	frame.setReason("Close code must not be send over the wire");
+	try {
+            frame.isValid();
+	    fail("InvalidDataException should be thrown");
+	} catch (InvalidDataException e) {
+	    //fine
+	}
+    }
+
+    @Test
+    public void testEquals() {
+	CloseFrame frame = new CloseFrame();
+
+	assertFalse(frame.equals(null));
+	assertFalse(frame.equals(new Object()));
+
+	CloseFrame frame1 = frame;
+	assertTrue(frame.equals(frame1));
+
+        frame1 = new CloseFrame();
+	frame1.setCode(CloseFrame.GOING_AWAY);
+	assertFalse(frame.equals(frame1));
+
+	frame1.setCode(CloseFrame.NORMAL);
+	assertTrue(frame.equals(frame1));
+
+	frame1.setReason("test");
+	assertFalse(frame.equals(frame1));
+
+	frame1.setReason("");
+	assertTrue(frame.equals(frame1));
+
+	frame1.setFin(false);
+	assertFalse(frame.equals(frame1));
+
+	frame1.setFin(true);
+	frame1.setRSV1(true);
+	assertFalse(frame.equals(frame1));
+
+	frame1.setRSV1(false);
+	frame1.setRSV2(true);
+	assertFalse(frame.equals(frame1));
+
+	frame1.setRSV2(false);
+	frame1.setRSV3(true);
+	assertFalse(frame.equals(frame1));
+
+	frame1.setRSV3(false);
+	assertTrue(frame.equals(frame1));	
+    }
+
+    @Test
+    public void testSetPayload() {
+	CloseFrame frame = new CloseFrame();
+	frame.setPayload(ByteBuffer.wrap("".getBytes()));
+	assertEquals("Must be CloseFrame.NORMAL", CloseFrame.NORMAL, frame.getCloseCode());
+
+	frame.setPayload(ByteBuffer.wrap("i".getBytes()));
+	assertEquals("Must be CloseFrame.PROTOCOL_ERROR", CloseFrame.PROTOCOL_ERROR, frame.getCloseCode());
+
+	frame.setPayload(ByteBuffer.wrap("io".getBytes()));
+	assertEquals("Uncertain values, if more than two character strings are transferred", 26991, frame.getCloseCode());
     }
 }
