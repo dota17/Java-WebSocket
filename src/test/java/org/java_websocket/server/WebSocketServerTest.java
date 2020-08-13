@@ -102,6 +102,14 @@ public class WebSocketServerTest {
         } catch (IllegalArgumentException e) {
             fail("Should not fail");
         }
+
+	WebSocketServer server = new MyWebSocketServer(inetAddress, 1);
+	assertEquals(0, server.getDraft().size());
+	assertEquals(0, server.getConnections().size());
+	assertEquals(-1, server.getMaxPendingConnections());
+
+	server.setMaxPendingConnections(1);
+	assertEquals(1, server.getMaxPendingConnections());
     }
 
 
@@ -184,7 +192,10 @@ public class WebSocketServerTest {
     }
     private static class MyWebSocketServer extends WebSocketServer {
         private CountDownLatch serverLatch = null;
-
+	
+        public MyWebSocketServer(InetSocketAddress address , int decodercount) {
+	    super(address, decodercount);
+        }
         public MyWebSocketServer(InetSocketAddress address , int decodercount , List<Draft> drafts , Collection<WebSocket> connectionscontainer) {
             super(address, decodercount, drafts, connectionscontainer);
         }

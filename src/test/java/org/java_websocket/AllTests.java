@@ -39,7 +39,9 @@ import org.junit.runners.Suite;
         org.java_websocket.exceptions.AllExceptionsTests.class,
 		org.java_websocket.misc.AllMiscTests.class,
 		org.java_websocket.protocols.AllProtocolTests.class,
-        org.java_websocket.framing.AllFramingTests.class
+        org.java_websocket.framing.AllFramingTests.class,
+        org.java_websocket.SSLSocketChannelTest.class,
+        org.java_websocket.SSLSocketChannel2Test.class
 })
 /**
  * Start all tests
