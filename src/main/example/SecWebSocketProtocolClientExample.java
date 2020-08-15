@@ -1,3 +1,4 @@
+package example;
 /*
  *  Copyright (c) 2010-2020 Nathan Rajlich
  *
