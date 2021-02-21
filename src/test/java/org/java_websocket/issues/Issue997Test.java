@@ -35,6 +35,7 @@ import org.java_websocket.server.DefaultSSLWebSocketServerFactory;
 import org.java_websocket.server.WebSocketServer;
 import org.java_websocket.util.SSLContextUtil;
 import org.java_websocket.util.SocketUtil;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.net.ssl.SSLContext;
@@ -52,6 +53,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
+@Ignore
 public class Issue997Test {
 
     @Test(timeout=2000)

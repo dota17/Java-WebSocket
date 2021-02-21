@@ -35,6 +35,7 @@ import org.java_websocket.util.KeyUtils;
 import org.java_websocket.util.SocketUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -52,7 +53,8 @@ import java.util.Scanner;
 
 import static org.junit.Assert.fail;
 
-@RunWith(Parameterized.class)
+//@RunWith(Parameterized.class)
+@Ignore
 public class Issue847Test {
 
 	private static Thread thread;

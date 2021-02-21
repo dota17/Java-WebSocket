@@ -48,7 +48,8 @@ import java.util.concurrent.CountDownLatch;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assume.assumeThat;
 
-@RunWith(Parameterized.class)
+@Ignore
+//@RunWith(Parameterized.class)
 public class Issue256Test {
 
 	private static final int NUMBER_OF_TESTS = 10;
